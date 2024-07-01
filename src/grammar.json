@@ -541,6 +541,10 @@
         },
         {
           "type": "PATTERN",
+          "value": "mla([a-z]+)?"
+        },
+        {
+          "type": "PATTERN",
           "value": "mov([a-z]+)?"
         },
         {
