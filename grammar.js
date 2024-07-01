@@ -24,10 +24,10 @@ module.exports = grammar({
             $.ldm_statement,
             $.push_statement,
             $.pool_statement,
-            $.label,
-          ),
+            $.label
+          )
         ),
-        $.return_statement,
+        $.return_statement
       ),
 
     math_statement: ($) =>
@@ -37,7 +37,7 @@ module.exports = grammar({
         ",",
         field("Rn", $.register),
         ",",
-        field("operand2", choice($.register, $.constant)),
+        field("operand2", choice($.register, $.constant))
       ),
 
     // We handle when [] or just a label and offsets
@@ -61,12 +61,12 @@ module.exports = grammar({
               choice(
                 field("offset", $.constant),
                 field("regoffset", $.register),
-                $.offset_statement,
-              ),
+                $.offset_statement
+              )
             ),
-            "]",
-          ),
-        ),
+            "]"
+          )
+        )
       ),
 
     ldm_statement: ($) =>
@@ -77,7 +77,7 @@ module.exports = grammar({
         ",",
         "{",
         field("registers", commaSep($.reg_list)),
-        "}",
+        "}"
       ),
 
     ldm_opcode: ($) => choice(/ldm([a-z]+)?/, /stm([a-z]+)?/),
@@ -103,7 +103,7 @@ module.exports = grammar({
         $.opcode,
         field("Rd", $.register),
         optional(","),
-        field("operand2", optional(choice($.register, $.constant))),
+        field("operand2", optional(choice($.register, $.constant)))
       ),
 
     // TODO: fairly limited and only to ARM/THUMB for now since that's all I use
@@ -135,7 +135,7 @@ module.exports = grammar({
         /umlal([a-z]+)?/,
         /smull([a-z]+)?/,
         /smlal([a-z]+)?/,
-        /nop/,
+        /nop/
       ),
 
     return_statement: ($) => seq($.branch_opcode, field("Rm", $.register)),
@@ -154,7 +154,7 @@ module.exports = grammar({
         /(bpl)\s+/,
         /(bx)\s+/,
         /(bl([a-z]+)?)\s+/,
-        /(bg([a-z]+)?)\s+/,
+        /(bg([a-z]+)?)\s+/
       ),
 
     //label: ($) => /(.*?):/,
@@ -174,14 +174,15 @@ module.exports = grammar({
       token(
         choice(
           seq("@", /(\\(.|\r?\n)|[^\\\n])*/),
-          seq(";", /(\\(.|\r?\n)|[^\\\n])*/),
-        ),
+          seq(";", /(\\(.|\r?\n)|[^\\\n])*/)
+        )
       ),
 
     // Used in ldr/str and directives
     offset_statement: ($) => seq($.identifier, /-+/, $.constant),
 
-    constant: ($) => token(choice(/[#]?\d+/, /[#]?0[xX][0-9a-fA-F]+/)),
+    constant: ($) =>
+      token(choice(/[#]?-?\d+/, /[#]?0[xX][0-9a-fA-F]+/, /[#]?'.'/)),
 
     //identifier: ($) => /[_A-z0-9]+/,
     identifier: ($) => /[a-zA-Z_]\w*/,
