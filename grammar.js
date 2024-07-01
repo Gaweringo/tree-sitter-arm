@@ -66,7 +66,11 @@ module.exports = grammar({
             ),
             "]"
           )
-        )
+        ),
+        optional(","),
+        optional(
+            field("offset", $.constant),
+        ),
       ),
 
     ldm_statement: ($) =>
@@ -135,7 +139,8 @@ module.exports = grammar({
         /umlal([a-z]+)?/,
         /smull([a-z]+)?/,
         /smlal([a-z]+)?/,
-        /nop/
+        /nop/,
+        /swi/,
       ),
 
     return_statement: ($) => seq($.branch_opcode, field("Rm", $.register)),
@@ -182,7 +187,7 @@ module.exports = grammar({
     offset_statement: ($) => seq($.identifier, /-+/, $.constant),
 
     constant: ($) =>
-      token(choice(/[#]?-?\d+/, /[#]?0[xX][0-9a-fA-F]+/, /[#]?'.'/)),
+      token(choice(/[#]?-?\d+/, /[#]?0[xX][0-9a-fA-F]+/, /[#]?'.'/, /".*"/)),
 
     //identifier: ($) => /[_A-z0-9]+/,
     identifier: ($) => /[a-zA-Z_]\w*/,
