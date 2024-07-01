@@ -114,6 +114,7 @@ module.exports = grammar({
         /sbc([a-z]+)?/,
         /ad[dc]([a-z]+)?/, // add/adc
         /mul([a-z]+)?/,
+        /mla([a-z]+)?/,
         /mov([a-z]+)?/,
         /[la]s[lr]([a-z]+)?/, // lsr, lsl, asl, asr
         /and([a-z]+)?/,
